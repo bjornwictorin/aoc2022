@@ -11,8 +11,12 @@ def is_subrange(interval_a: Tuple[int, int], interval_b: Tuple[int, int]) -> boo
 
 
 def do_overlap(interval_a: Tuple[int, int], interval_b: Tuple[int, int]) -> bool:
-    highest_interval = interval_a if interval_a[1] >= interval_b[1] else interval_b
-    lowest_interval = interval_b if highest_interval == interval_a else interval_a
+    if interval_a[1] >= interval_b[1]:
+        highest_interval = interval_a
+        lowest_interval = interval_b
+    else:
+        highest_interval = interval_b
+        lowest_interval = interval_a
     return highest_interval[0] <= lowest_interval[1]
 
 
