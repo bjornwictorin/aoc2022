@@ -11,5 +11,6 @@ def main():
         max_calories = max(max_calories, accumulated_calories)
         print(max_calories)
 
+
 if __name__ == "__main__":
     main()

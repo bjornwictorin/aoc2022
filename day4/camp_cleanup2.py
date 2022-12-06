@@ -26,8 +26,8 @@ def main():
         for line in f:
             range_ends = tuple(int(ii) for ii in re.split("-|,", line))
             assert len(range_ends) == 4
-            first_range = (range_ends[:2])
-            second_range = (range_ends[2:])
+            first_range = range_ends[:2]
+            second_range = range_ends[2:]
             assert len(first_range) == 2
             assert len(second_range) == 2
             if do_overlap(first_range, second_range):

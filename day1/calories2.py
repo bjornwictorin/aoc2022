@@ -10,9 +10,12 @@ def main():
                 accumulated_calories += int(line)
         calories_per_elf.append(accumulated_calories)
         calories_per_elf.sort(reverse=True)
-        assert(len(calories_per_elf) >= 3)
-        top3_calory_sum = calories_per_elf[0] + calories_per_elf[1] + calories_per_elf[2]
+        assert len(calories_per_elf) >= 3
+        top3_calory_sum = (
+            calories_per_elf[0] + calories_per_elf[1] + calories_per_elf[2]
+        )
         print(top3_calory_sum)
+
 
 if __name__ == "__main__":
     main()

@@ -43,7 +43,9 @@ def decode_move_instr(line: str) -> Tuple[int, int, int]:
     return num_crates, from_stack, to_stack
 
 
-def move_n_crates(stacks: Tuple[List[str], ...], num_crates: int, from_stack: int, to_stack: int) -> None:
+def move_n_crates(
+    stacks: Tuple[List[str], ...], num_crates: int, from_stack: int, to_stack: int
+) -> None:
     for _ in range(num_crates):
         assert len(stacks[from_stack - 1]) > 0, "From stack must not be empty!"
         # Take indices -1 because indexing is from 0, not 1

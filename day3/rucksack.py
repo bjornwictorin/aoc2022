@@ -21,10 +21,12 @@ def main():
             line = line.strip()
             num_items = len(line)
             assert num_items % 2 == 0
-            first_half = line[:num_items//2]
-            second_half = line[num_items//2:]
+            first_half = line[: num_items // 2]
+            second_half = line[num_items // 2 :]
             assert len(first_half) == len(second_half)
-            for item in set(first_half): # convert to set to only check each letter once
+            for item in set(
+                first_half
+            ):  # convert to set to only check each letter once
                 if item in second_half:
                     value = get_item_value(item)
                     prio_sum += value
