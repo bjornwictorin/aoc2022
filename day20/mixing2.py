@@ -24,11 +24,11 @@ def parse_input(file_name: str) -> Node:
     with open(file_name, "r") as f:
         for ii, line in enumerate(f):
             if ii == 0:
-                base_node = Node(None, None, ii, int(line))
+                base_node = Node(None, None, ii, int(line) * DECRYPTION_KEY)
                 # * DECRYPTION_KEY
                 last_node = base_node
             else:
-                new_node = Node(last_node, base_node, ii, int(line))
+                new_node = Node(last_node, base_node, ii, int(line) * DECRYPTION_KEY)
                 # * DECRYPTION_KEY
                 assert(isinstance(base_node, Node))
                 assert(isinstance(last_node, Node))
@@ -83,34 +83,38 @@ def find_node_by_value(base_node: Node, value: int) -> Node:
     assert False
 
 
+def remove_entry(base_node: Node) -> None:
+    next_node = base_node.next
+    prev_node = base_node.prev
+    # remove base
+    prev_node.next = next_node
+    next_node.prev = prev_node
+
+
+def insert_after(base_node: Node, next_node: Node) -> None:
+    # Careful, order matters!
+    next_node.next.prev = base_node
+    base_node.next = next_node.next
+    next_node.next = base_node
+    base_node.prev = next_node
+
+
 def move_forward(base_node: Node, steps: int) -> None:
+    remove_entry(base_node)
+    next_node = base_node.prev
+    # There are NUM_ENTRIES - 1 entries in the list here because base_node is removed
     for _ in range(steps % (NUM_ENTRIES - 1)):
-        next_node = base_node.next
-        next_next_node = next_node.next
-        prev_node = base_node.prev
-        # remove base
-        prev_node.next = next_node
-        next_node.prev = prev_node
-        # insert at new pos
-        next_node.next = base_node
-        next_next_node.prev = base_node
-        base_node.prev = next_node
-        base_node.next = next_next_node
+        next_node = next_node.next
+    insert_after(base_node, next_node)
 
 
 def move_backward(base_node: Node, steps: int) -> None:
+    remove_entry(base_node)
+    prev_node = base_node.next
+    # There are NUM_ENTRIES - 1 entries in the list here because base_node is removed
     for _ in range(steps % (NUM_ENTRIES - 1)):
-        next_node = base_node.next
-        prev_node = base_node.prev
-        prev_prev_node = prev_node.prev
-        # remove base
-        prev_node.next = next_node
-        next_node.prev = prev_node
-        # insert at new pos
-        prev_node.prev = base_node
-        prev_prev_node.next = base_node
-        base_node.prev = prev_prev_node
-        base_node.next = prev_node
+        prev_node = prev_node.prev
+    insert_after(base_node, prev_node.prev)
 
 
 def mix_list(base_node: Node) -> None:
@@ -141,9 +145,8 @@ def main():
     base_node = parse_input("input.txt")
     global NUM_ENTRIES
     NUM_ENTRIES = list_len(base_node)
-    print(list_len(base_node))
-    # for _ in range(10):
-    mix_list(base_node)
+    for _ in range(10):
+        mix_list(base_node)
     code = calc_code(base_node)
     print(code)
 
